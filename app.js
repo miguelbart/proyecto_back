@@ -4,10 +4,11 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var database = require("./config/database");
+var auth = require("./auth/main_auth");
+// se eliinaron dos archivos index.js y users.js
 
 var empleadosRouter = require('./routes/empleados.router');
-
-
+var usuariosRouter = require("./routes/usuario.router");
 var app = express();
 
 app.use(logger('dev'));
@@ -16,12 +17,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-//Mongo connection
+//mongoConnectio
 database.mongoConnect();
+app.use("/usuarios", usuariosRouter);
+app.use(auth)
 
-//Router
-app.use('/empleados', empleadosRouter);
-
+//router
+//app.use('/', indexRouter);
+//app.use('/users', usersRouter); se elininan no se necesitan 
+app.use('/empleados',empleadosRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
