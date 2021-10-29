@@ -1,82 +1,80 @@
 const Empleado = require("../models/empleados.model");
+
 let response ={
     msg:"",
     exito:false
 }
-
 exports.create = function(req, res){
     let empleado = new Empleado({
-        nombre:req.body.nombre,
-        apellido_p:req.body.apellido_p,
-        apellido_m:req.body.apellido_m,
-        telefono:req.body.telefono,
-        email:req.body.email,
-        direccion:req.body.direccion,
-    })
+    nombre:req.body.nombre,
+    apellido_p:req.body.apellido_p,
+    apellido_m:req.body.apellido_m,
+    telefono:req.body.telefono,
+    email:req.body.email,
+    dirreccion:req.body.dirreccion,
 
-    empleado.save(function(err){
-        if(err){
-        console.log = false,
-        response.exito = false,
-        response.msg ="error al guardar el empleado"
-        res.json(response)
-        return;
-   
-    }
-    response.exito = true,
-    response.msg ="el empleado se guardo correctamente" 
-    res.json(response)
-    })
+})
+ empleado.save(function(err){
+     if(err){
+     console.log = false,
+     response.exito = false,
+     response.msg ="error al guardar el empleado"
+     res.json(response)
+     return;
+
+ }
+ response.exito = true,
+ response.msg ="el empleado se guardo correctamente" 
+ res.json(response)
+ })
 }
-exports.find = function(req,res){
+exports.find = function(req, res){
     Empleado.find(function(err, empleados){
         res.json(empleados)
     })
 }
 
-exports.findOne = function(req,res){
-    Empleado.findOne({_id: req.params.id},function(err, empleado){
+exports.findOne =function(req, res){
+    Empleado.findOne({_id: req.params.id}, function(err, empleado){
         res.json(empleado)
     })
 }
+exports.update=function(req, res){
+    let empleado = {
 
-exports.update = function(req,res){
-    let empleado ={
         nombre:req.body.nombre,
         apellido_p:req.body.apellido_p,
         apellido_m:req.body.apellido_m,
         telefono:req.body.telefono,
         email:req.body.email,
-        direccion:req.body.direccion,
+        dirreccion:req.body.dirreccion,  
     }
-
-    Empleado.findByIdAndUpdate(req.params.id, {$set: empleado}, function(err){
-        if(err)
-        {
-            console.err(err),
+    Empleado.findByIdAndUpdate(req.params.id,{$set: empleado},function(err){
+        if(err){
+            console.log = false,
             response.exito = false,
-            response.msg = "Error al cambiar datos de empleado"
+            response.msg ="error al modificar el empleado"
             res.json(response)
             return;
+       
         }
         response.exito = true,
-        response.msg = "Los datos del empleado se han actualizado"
-        res.json(response)
+        response.msg ="el empleado se modifico correctamente" 
+        res.json(response)   
     })
 }
-
-exports.remove = function(req,res){
-    Empleado.findByIdAndRemove({_id: req.params.id}, function(err, empleado){
-        if(err){
-            console.error(err),
-            response.exito = false,
-            response.msg = "nose pudo elimina el empleado"
-            res.json(response)
-            return;
-        }
-        
-        response.exito = true,
-        response.msg = "Se pudo elimina el empleado"
+exports.remove = function(req, res){
+Empleado.findByIdAndRemove({_id: req.params.id},function(err){
+    if(err){
+        console.log = false,
+        response.exito = false,
+        response.msg ="error al elinar el empleado"
         res.json(response)
-    })
+        return;
+   
+    }
+    response.exito = true,
+    response.msg ="el empleado se elimino correctamente" 
+    res.json(response)   
+})
 }
